@@ -23,7 +23,6 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [showBanner, setShowBanner] = useState(false);
 
-  // Simulated data fetch for skeleton loader
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -32,7 +31,6 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Late-loading banner (intentional CLS anti-pattern)
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowBanner(true);
@@ -41,14 +39,13 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Intentional main-thread blocking task
   useEffect(() => {
     console.log("Simulating heavy analytics initialization...");
 
     const start = performance.now();
 
     while (performance.now() - start < 600) {
-      // Intentionally block the UI
+      // intentional blocking (we'll fix next)
     }
 
     console.log("Analytics initialized.");
@@ -60,7 +57,10 @@ function App() {
 
   return (
     <div>
-      {showBanner && <AdBanner />}
+      {/* CLS Fix: reserve space before banner loads */}
+      <div style={{ minHeight: "90px" }}>
+        {showBanner && <AdBanner />}
+      </div>
 
       <Hero />
 
