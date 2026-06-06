@@ -39,16 +39,21 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
+  // TBT/TTI Fix
   useEffect(() => {
-    console.log("Simulating heavy analytics initialization...");
+    const initAnalytics = () => {
+      console.log("Simulating heavy analytics initialization...");
 
-    const start = performance.now();
+      const start = performance.now();
 
-    while (performance.now() - start < 600) {
-      // intentional blocking (we'll fix next)
-    }
+      while (performance.now() - start < 600) {
+        // heavy work
+      }
 
-    console.log("Analytics initialized.");
+      console.log("Analytics initialized.");
+    };
+
+    setTimeout(initAnalytics, 0);
   }, []);
 
   if (loading) {
@@ -57,7 +62,6 @@ function App() {
 
   return (
     <div>
-      {/* CLS Fix: reserve space before banner loads */}
       <div style={{ minHeight: "90px" }}>
         {showBanner && <AdBanner />}
       </div>
