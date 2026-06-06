@@ -7,19 +7,30 @@
 
     <title>Slow News Feed</title>
 
-    <!-- Intentional Anti-Pattern: Render-blocking font -->
+    <!-- Fix: Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Fix: Async font loading -->
     <link
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap"
     />
 
-    <!-- Intentional Anti-Pattern: Render-blocking CSS -->
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap"
+      />
+    </noscript>
+
     <link rel="stylesheet" href="/styles/main.css" />
   </head>
 
   <body>
     <div id="root"></div>
-
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

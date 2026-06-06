@@ -1,73 +1,39 @@
-# React + TypeScript + Vite
+# Core Web Vitals Performance Report
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+| Metric            | v1 Broken | v2 Fixed | Improvement (Δ) |
+| ----------------- | --------- | -------- | --------------- |
+| FCP               | 6.9 s     | 2.8 s    | -4.1 s          |
+| LCP               | 12.7 s    | 2.8 s    | -9.9 s          |
+| CLS               | 0.451     | 0.108    | -0.343          |
+| TBT               | 4,820 ms  | 1,220 ms | -3,600 ms       |
+| Performance Score | 7         | 63       | +56             |
 
-Currently, two official plugins are available:
+## Optimizations Applied
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Fix 1 - Font Loading
 
-## React Compiler
+* Added preconnect for Google Fonts.
+* Loaded font stylesheet asynchronously.
+* Reduced render-blocking resources.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Fix 2 - Hero Image Optimization
 
-## Expanding the ESLint configuration
+* Converted hero image from PNG to WebP.
+* Added width and height attributes.
+* Added fetchPriority="high".
+* Removed lazy loading from above-the-fold image.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Fix 3 - Prevent Layout Shifts
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+* Added width and height attributes to thumbnails and avatars.
+* Reserved banner space using minHeight.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Fix 4 - Improve TTI and TBT
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+* Deferred analytics initialization using setTimeout.
+* Removed blocking work from initial page render.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Fix 5 - Reduce Bundle Size
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+* Removed full lodash import.
+* Replaced sorting logic with native JavaScript Array.sort().
